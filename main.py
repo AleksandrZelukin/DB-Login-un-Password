@@ -23,33 +23,28 @@ def index():
 
 @app.route('/authorization', methods=['GET', 'POST'])
 def form_authorization():
-  if request.method == 'POST':
-       login = request.form.get('Login')
-       parole = request.form.get('Password')
-       db_lp = sqlite3.connect('login_password.db')
-       cursor_db = db_lp.cursor()
-       cursor_db.execute(('''SELECT parole FROM passwords WHERE login = '{}'; ''').format(login))
-       pas = list(cursor_db.fetchall())
+    if request.method == 'POST':
+      Login = request.form.get('Login')
+      parole = request.form.get('parole')
+      db_lp = sqlite3.connect('login_password.db')
+      cursor_db = db_lp.cursor()
+      cursor_db.execute(('''SELECT parole FROM passwords WHERE login = '{}';''').format(Login))
+      pwd = cursor_db.fetchall()
+      cursor_db.close()
+      print(pwd)
+      a = check_password_hash(pwd,parole)
+      print(a)
+      try:
+        if check_password_hash(pwd,parole): 
+        # if pwd[0][0] != parole:
+          return render_template('successfulauth.html')
+          # return render_template('auth_bad.html')
+      except:
+        return render_template('auth_bad.html')
 
-       try:
-        if request.form.get('Password') == check_password_hash(parole,pas):
-
-          return render_template("successfulauth.html")
-       except:
-          return render_template("auth_bad.html")
-  return render_template('authorization.html')
-
-          
-  
-  #      try:
-  #          if pas[0][0] != Password:
-  #              return render_template('auth_bad.html')
-  #      except:
-  #          return render_template('index.html')
-  #      cursor_db.close()
-  #      db_lp.close()
-  #      return render_template('successfulauth.html')
-  # return render_template('authorization.html')
+      db_lp.close()
+      return render_template('successfulauth.html')
+    return render_template('authorization.html')
 
 @app.route('/registration', methods=['GET', 'POST'])
 def form_registration():
@@ -70,3 +65,22 @@ def form_registration():
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1',debug=True)
+
+
+# @app.route('/authorization', methods=['GET', 'POST'])
+# def form_authorization():
+#   if request.method == 'POST':
+#        login = request.form.get('Login')
+#        parole = request.form.get('Password')
+#        db_lp = sqlite3.connect('login_password.db')
+#        cursor_db = db_lp.cursor()
+#        cursor_db.execute(('''SELECT parole FROM passwords WHERE login = '{}'; ''').format(login))
+#        pas = list(cursor_db.fetchall())
+
+#        try:
+#         if request.form.get('Password') == check_password_hash(parole,pas):
+
+#           return render_template("successfulauth.html")
+#        except:
+#           return render_template("auth_bad.html")
+#   return render_template('authorization.html')
