@@ -14,7 +14,7 @@ parole TEXT NOT NULL);''')
 cursor_db.execute(sql_create)
 db_lp.commit()
 
-# cursor_db.close()
+cursor_db.close()
 # db_lp.close()
 
 @app.route('/')
@@ -24,18 +24,22 @@ def index():
 @app.route('/authorization', methods=['GET', 'POST'])
 def form_authorization():
     if request.method == 'POST':
-      Login = request.form.get('Login')
-      parole = request.form.get('parole')
+      login = request.form.get('Login')
+      parole = request.form.get('Password')
       db_lp = sqlite3.connect('login_password.db')
       cursor_db = db_lp.cursor()
-      cursor_db.execute(('''SELECT parole FROM passwords WHERE login = '{}';''').format(Login))
-      pwd = cursor_db.fetchall()
+      cursor_db.execute(('''SELECT parole FROM passwords WHERE login = '{}';''').format(login))
+      pwd = cursor_db.fetchone()
+      for i in pwd:
+         print(i[::])
+         name= i[::]
       cursor_db.close()
-      print(pwd)
-      a = check_password_hash(pwd,parole)
+      # print(pwd)
+      a = check_password_hash(name,parole)
       print(a)
       try:
-        if check_password_hash(pwd,parole): 
+        if check_password_hash(name,parole):
+        # if pwd != check_password_hash(pwd,parole):
         # if pwd[0][0] != parole:
           return render_template('successfulauth.html')
           # return render_template('auth_bad.html')
@@ -49,12 +53,13 @@ def form_authorization():
 @app.route('/registration', methods=['GET', 'POST'])
 def form_registration():
    if request.method == 'POST':
-       Login = request.form.get('Login')
+       login = request.form.get('Login')
        parole = request.form.get('Password')
-       psw = generate_password_hash(parole)
+       # psw = generate_password_hash(parole)
        db_lp = sqlite3.connect('login_password.db')
        cursor_db = db_lp.cursor()
-       sql_insert = '''INSERT INTO passwords VALUES('{}','{}');'''.format(Login, psw)
+       # sql_insert = '''INSERT INTO passwords VALUES('{}','{}');'''.format(Login, psw)
+       sql_insert = '''INSERT INTO passwords VALUES('{}','{}');'''.format(login,generate_password_hash(parole))
        cursor_db.execute(sql_insert)
        cursor_db.close()
        db_lp.commit()
