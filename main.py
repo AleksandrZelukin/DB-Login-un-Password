@@ -24,20 +24,23 @@ def index():
 @app.route('/authorization', methods=['GET', 'POST'])
 def form_authorization():
   if request.method == 'POST':
-       Login = request.form.get('Login')
+       login = request.form.get('Login')
        parole = request.form.get('Password')
-      #  if Password and Password.check_password_hash(Password):
        db_lp = sqlite3.connect('login_password.db')
        cursor_db = db_lp.cursor()
-       cursor_db.execute(('''SELECT parole FROM passwords
-                                               WHERE login = '{}';
-                                               ''').format(Login))
-       pas = cursor_db.fetchall()
-       print(pas)
-       if request.form.get('Password') == check_password_hash(pas):
+       cursor_db.execute(('''SELECT parole FROM passwords WHERE login = '{}'; ''').format(login))
+       pas = list(cursor_db.fetchall())
 
-        return render_template('successfulauth.html')
+       try:
+        if request.form.get('Password') == check_password_hash(parole,pas):
+
+          return render_template("successfulauth.html")
+       except:
+          return render_template("auth_bad.html")
   return render_template('authorization.html')
+
+          
+  
   #      try:
   #          if pas[0][0] != Password:
   #              return render_template('auth_bad.html')
