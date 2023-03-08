@@ -70,6 +70,10 @@ def form_registration():
        return render_template('successfulregis.html')
    return render_template('registration.html')
 
+@app.route('/pass_generator')
+def pass_generator():
+    return render_template("pass_generator.html")
+    
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1',debug=True)
