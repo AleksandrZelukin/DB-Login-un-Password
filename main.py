@@ -11,8 +11,9 @@ sql = db.cursor()
 
 
 sql.execute('''CREATE TABLE IF NOT EXISTS passwords(
-login TEXT PRIMARY KEY,
-parole TEXT NOT NULL);''')
+id_user INTEGER PRIMARY KEY AUTOINCREMENT,
+login TEXT,
+parole TEXT);''')
 db.commit()
 
 sql.close()
@@ -36,6 +37,7 @@ def form_authorization():
         return render_template ("auth_bad.html")
       sql.execute(('''SELECT parole FROM passwords WHERE login = '{}';''').format(login))
       pwd = sql.fetchone()
+      print(pwd)
       sql.close()
       pwd=pwd[0]  
       p = check_password_hash(pwd,parole)
@@ -56,10 +58,12 @@ def form_registration():
        login = request.form.get('Login')
        parole = request.form.get('Password')
        parole2 = request.form.get('Password2')
+       rez = [login,generate_password_hash(parole)]
        db = sqlite3.connect('login_password.db')
        sql = db.cursor()
-       sql_insert = '''INSERT INTO passwords VALUES('{}','{}');'''.format(login,generate_password_hash(parole))
-       sql.execute(sql_insert)
+       sql.execute("INSERT INTO passwords(login,parole) VALUES(?,?)",rez)
+      #  sql_insert = '''INSERT INTO passwords VALUES('{}','{}');'''.format(login,generate_password_hash(parole))
+      #  sql.execute(sql_insert)
        sql.close()
        db.commit()
        db.close()
