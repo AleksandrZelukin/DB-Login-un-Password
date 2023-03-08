@@ -28,10 +28,15 @@ def form_authorization():
       parole = request.form.get('Password')
       db_lp = sqlite3.connect('login_password.db')
       cursor_db = db_lp.cursor()
+      info = cursor_db.execute(('''SELECT login FROM passwords WHERE login = '{}';''').format(login))
+      if info.fetchone() is None: 
+        return render_template ("index.html")
+
       cursor_db.execute(('''SELECT parole FROM passwords WHERE login = '{}';''').format(login))
       pwd = cursor_db.fetchone()
+      print(pwd)
       cursor_db.close()
-      pwd=pwd[0]
+      pwd=pwd[0]  
       p = check_password_hash(pwd,parole)
       try:
           if not p:
