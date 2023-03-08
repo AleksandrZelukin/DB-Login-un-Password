@@ -28,10 +28,11 @@ def form_authorization():
       parole = request.form.get('Password')
       db_lp = sqlite3.connect('login_password.db')
       cursor_db = db_lp.cursor()
-      info = cursor_db.execute(('''SELECT login FROM passwords WHERE login = '{}';''').format(login))
-      if info.fetchone() is None: 
+      info = cursor_db.execute(('''SELECT login FROM passwords WHERE login = '{}';''').format(login)).fetchone()
+      # if info.fetchone() is None: 
+      if len(info) == 0 :
         return render_template ("index.html")
-
+# https://ru.stackoverflow.com/questions/1240689/%D0%9A%D0%B0%D0%BA-%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%B8%D1%82%D1%8C-%D0%B5%D1%81%D1%82%D1%8C-%D0%BB%D0%B8-%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D1%8C-%D0%B2-%D1%82%D0%B0%D0%B1%D0%BB%D0%B8%D1%86%D0%B5-sqlite3
       cursor_db.execute(('''SELECT parole FROM passwords WHERE login = '{}';''').format(login))
       pwd = cursor_db.fetchone()
       print(pwd)
