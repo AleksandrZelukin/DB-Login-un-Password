@@ -1,5 +1,5 @@
 # https://timeweb.cloud/tutorials/python/sozdanie-veb-prilozheniya-s-ispolzovaniem-python-flask#bd-dlya-loginov-i-parolej
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect,flash,url_for
 import sqlite3
 from werkzeug.security import check_password_hash, generate_password_hash
 app = Flask(__name__)
@@ -15,7 +15,7 @@ cursor_db.execute(sql_create)
 db_lp.commit()
 
 cursor_db.close()
-# db_lp.close()
+db_lp.close()
 
 @app.route('/')
 def index():
@@ -30,25 +30,18 @@ def form_authorization():
       cursor_db = db_lp.cursor()
       cursor_db.execute(('''SELECT parole FROM passwords WHERE login = '{}';''').format(login))
       pwd = cursor_db.fetchone()
-      for i in pwd:
-         print(i[::])
-         name= i[::]
       cursor_db.close()
-      # print(pwd)
-      a = check_password_hash(name,parole)
-      print(a)
+      pwd=pwd[0]
+      p = check_password_hash(pwd,parole)
       try:
-        if check_password_hash(name,parole):
-        # if pwd != check_password_hash(pwd,parole):
-        # if pwd[0][0] != parole:
-          return render_template('successfulauth.html')
-          # return render_template('auth_bad.html')
+          if not p:
+               return render_template('auth_bad.html')
       except:
-        return render_template('auth_bad.html')
-
-      db_lp.close()
+           return render_template('auth_bad.html')
+      #  db_lp.close()
       return render_template('successfulauth.html')
     return render_template('authorization.html')
+
 
 @app.route('/registration', methods=['GET', 'POST'])
 def form_registration():
@@ -72,20 +65,3 @@ if __name__ == "__main__":
     app.run(host='127.0.0.1',debug=True)
 
 
-# @app.route('/authorization', methods=['GET', 'POST'])
-# def form_authorization():
-#   if request.method == 'POST':
-#        login = request.form.get('Login')
-#        parole = request.form.get('Password')
-#        db_lp = sqlite3.connect('login_password.db')
-#        cursor_db = db_lp.cursor()
-#        cursor_db.execute(('''SELECT parole FROM passwords WHERE login = '{}'; ''').format(login))
-#        pas = list(cursor_db.fetchall())
-
-#        try:
-#         if request.form.get('Password') == check_password_hash(parole,pas):
-
-#           return render_template("successfulauth.html")
-#        except:
-#           return render_template("auth_bad.html")
-#   return render_template('authorization.html')
