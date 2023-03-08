@@ -1,5 +1,5 @@
 form {
-     font: 14px Stem-Regular,arial, sans-serif;/*Выбираем шрифт */
+    font: 14px Stem-Regular,arial, sans-serif;/*Выбираем шрифт */
     border: 1px solid black;/*Цвет, размер и тип границы */
     -webkit-border-radius: 20px;/*Скругляем углы */
     color: #777991;/*Цвет label */
@@ -8,6 +8,10 @@ form {
     margin-left: auto; /*Положение формы */
     text-align: center; /*Центровка текста*/
 
+}
+
+.container {
+    padding: 30px;/*Размер внутренних отступов контейнера*/
 }
 
 input[type=text], input[type=password] {
@@ -22,7 +26,7 @@ input[type=text], input[type=password] {
     border: 1px solid #050c26;/*Цвет, размер и тип границы */
     box-sizing: border-box; /*Размер объекта по отношению к родительскому */
     font: 14px Stem-Regular,arial, sans-serif;/*Выбираем шрифт */
-    color: #777991;/*Цвет текста в input */  
+    color: #777991;/*Цвет текста в input */
 }
 
 button {
@@ -41,6 +45,3 @@ button:hover {
     opacity: 0.9; /*Изменение яркости кнопки при наведении*/
 }
 
-.container {
-    padding: 20px; /*Размер внутренних отступов контейнера*/
-}
