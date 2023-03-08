@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <link rel="stylesheet" href="static/css/style.css">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/css/login.css">
+    <title>Ieeja</title>
 </head>
 <body>
-<form method="POST">
-  <div class="container">
-    <label for="Login"><b>Lietotajvārds</b></label>
-    <input type="text" placeholder="" name="Login" required>
-    <label for="Password"><b>Parole</b></label>
-    <input type="password" placeholder="" name="Password" required>
-    <button type="submit" class="btn btn-primary btn-large btn-block">Ienākt</button>
-   <div class="container">
-    <span class="reg"> <a href="/registration">Registrācija</a></span>
-  </div>
-</form>  
-
+    <div class="login">
+        <div class="login-triangle"></div>
+        <h2 class="login-header">Ieeja reģistrētiem lietotajiem</h2>
+        <form class="login-container" method="POST">
+          <input type="text" placeholder="Lietotājs" name="Login" required></p>
+          <input type="password" placeholder="Parole" name="Password" required></p>
+          <p><input type="submit" value="Ieeja"></p>
+          <a href="/registration">Registrācija</a>
+        </form>
+         
+      </div>
 </body>
 </html>

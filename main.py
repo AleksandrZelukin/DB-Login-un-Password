@@ -2,20 +2,23 @@
 from flask import Flask, request, render_template, redirect,flash,url_for
 import sqlite3
 from werkzeug.security import check_password_hash, generate_password_hash
+
+
 app = Flask(__name__)
 
-db_lp = sqlite3.connect('login_password.db')
-cursor_db = db_lp.cursor()
+db = sqlite3.connect('login_password.db')
+sql = db.cursor()
 
-sql_create = ('''CREATE TABLE IF NOT EXISTS passwords(
+
+sql.execute('''CREATE TABLE IF NOT EXISTS passwords(
 login TEXT PRIMARY KEY,
 parole TEXT NOT NULL);''')
+db.commit()
 
-cursor_db.execute(sql_create)
-db_lp.commit()
+sql.close()
+db.close()
 
-cursor_db.close()
-db_lp.close()
+
 
 @app.route('/')
 def index():
@@ -26,14 +29,14 @@ def form_authorization():
     if request.method == 'POST':
       login = request.form.get('Login')
       parole = request.form.get('Password')
-      db_lp = sqlite3.connect('login_password.db')
-      cursor_db = db_lp.cursor()
-      info = cursor_db.execute(('''SELECT login FROM passwords WHERE login = '{}';''').format(login)).fetchone()
+      db = sqlite3.connect('login_password.db')
+      sql = db.cursor()
+      info = sql.execute(('''SELECT login FROM passwords WHERE login = '{}';''').format(login)).fetchone()
       if info is None:
         return render_template ("auth_bad.html")
-      cursor_db.execute(('''SELECT parole FROM passwords WHERE login = '{}';''').format(login))
-      pwd = cursor_db.fetchone()
-      cursor_db.close()
+      sql.execute(('''SELECT parole FROM passwords WHERE login = '{}';''').format(login))
+      pwd = sql.fetchone()
+      sql.close()
       pwd=pwd[0]  
       p = check_password_hash(pwd,parole)
       try:
@@ -44,6 +47,7 @@ def form_authorization():
       #  db_lp.close()
       return render_template('successfulauth.html')
     return render_template('authorization.html')
+    # return render_template('login_form.html')
 
 
 @app.route('/registration', methods=['GET', 'POST'])
@@ -51,13 +55,14 @@ def form_registration():
    if request.method == 'POST':
        login = request.form.get('Login')
        parole = request.form.get('Password')
-       db_lp = sqlite3.connect('login_password.db')
-       cursor_db = db_lp.cursor()
+       parole2 = request.form.get('Password2')
+       db = sqlite3.connect('login_password.db')
+       sql = db.cursor()
        sql_insert = '''INSERT INTO passwords VALUES('{}','{}');'''.format(login,generate_password_hash(parole))
-       cursor_db.execute(sql_insert)
-       cursor_db.close()
-       db_lp.commit()
-       db_lp.close()
+       sql.execute(sql_insert)
+       sql.close()
+       db.commit()
+       db.close()
        return render_template('successfulregis.html')
    return render_template('registration.html')
 
