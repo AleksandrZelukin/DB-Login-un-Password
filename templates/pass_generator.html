@@ -63,23 +63,27 @@
         h1 {
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
         }
+        h2 {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+        }
     </style>
 </head>
 <body>
     <div id="container">
-        <h1>Password Generator</h1>
+        <h1>Ģenerēt parole</h1>
         <div id="symbols">
-            <label><input type="checkbox" value="1" checked>Numbers</label>
-            <label><input type="checkbox" value="2" checked>Letters (a-z, A-Z)</label>
-            <label><input type="checkbox" value="3" checked>Special Characters</label>
+            <label><input type="checkbox" value="1" checked>Cipari</label>
+            <label><input type="checkbox" value="2" checked>Burti (a-z, A-Z)</label>
+            <label><input type="checkbox" value="3" checked>Speciālie simboli</label>
         </div>
         <label>Password Length: </label>
         <input type="number" id="length" value="8" min="1" max="20">
-        <input type="button" value="Generate Password" onclick="generatePassword()">
-        <input type="button" value="Copy" id="copy-password" onclick="copypass()">
+        <input type="button" value="Ģenerēt parole" onclick="generatePassword()">
+        <input type="button" value="Kopēt" id="copy-password" onclick="copypass()">
         <input type="text" id="password" value="" readonly>
+        <h2><a href="/registration">Atpakaļ uz reģistrācijas lapu</a></h2>
     </div>
-    <div><a href="/registration">Atpakaļ uz reģistrācijas lapu</a></div>
+    <div></div>
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
     <script>
         function delay(time) {
