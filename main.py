@@ -3,12 +3,10 @@ from flask import Flask, request, render_template, redirect,flash,url_for
 import sqlite3
 from werkzeug.security import check_password_hash, generate_password_hash
 
-
 app = Flask(__name__)
 
 db = sqlite3.connect('login_password.db')
 sql = db.cursor()
-
 
 sql.execute('''CREATE TABLE IF NOT EXISTS passwords(
 id_user INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -48,11 +46,8 @@ def form_authorization():
                return render_template('auth_bad.html')
       except:
            return render_template('auth_bad.html')
-      #  db_lp.close()
       return render_template('successfulauth.html')
     return render_template('authorization.html')
-    # return render_template('login_form.html')
-
 
 @app.route('/registration', methods=['GET', 'POST'])
 def form_registration():
@@ -81,7 +76,6 @@ def form_registration():
 def pass_generator():
     return render_template("pass_generator.html")
     
-
 if __name__ == "__main__":
     app.run(host='0.0.0.0',port='8080',debug=True)
 

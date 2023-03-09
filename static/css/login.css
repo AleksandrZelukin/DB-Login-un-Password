@@ -5,6 +5,10 @@ body {
   background: #456;
   font-family: 'Open Sans', sans-serif;
 }
+#temp {
+  text-align: center;
+  color: rgb(0, 255, 162);
+}
 
 .login {
   width: 400px;
