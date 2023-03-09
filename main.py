@@ -19,11 +19,13 @@ db.commit()
 sql.close()
 db.close()
 
-
-
 @app.route('/')
 def index():
   return render_template("index.html")
+
+@app.route('/reg_bad')
+def reg_bad():
+  return render_template("reg_bad.html")
 
 @app.route('/authorization', methods=['GET', 'POST'])
 def form_authorization():
@@ -58,16 +60,21 @@ def form_registration():
        login = request.form.get('Login')
        parole = request.form.get('Password')
        parole2 = request.form.get('Password2')
+       if parole != parole2:
+        return redirect(url_for("reg_bad"))      
        rez = [login,generate_password_hash(parole)]
        db = sqlite3.connect('login_password.db')
        sql = db.cursor()
-       sql.execute("INSERT INTO passwords(login,parole) VALUES(?,?)",rez)
-      #  sql_insert = '''INSERT INTO passwords VALUES('{}','{}');'''.format(login,generate_password_hash(parole))
-      #  sql.execute(sql_insert)
-       sql.close()
-       db.commit()
-       db.close()
-       return render_template('successfulregis.html')
+       info = sql.execute(('''SELECT login FROM passwords WHERE login = '{}';''').format(login)).fetchone()
+       if info is None:
+           sql.execute("INSERT INTO passwords(login,parole) VALUES(?,?)",rez)
+           sql.close()
+           db.commit()
+           db.close()
+           return render_template('successfulregis.html')
+       info=info[0]
+       if login == info:
+            return redirect(url_for("reg_bad"))    
    return render_template('registration.html')
 
 @app.route('/pass_generator')
@@ -76,6 +83,6 @@ def pass_generator():
     
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1',debug=True)
+    app.run(host='0.0.0.0',port='8080',debug=True)
 
 
