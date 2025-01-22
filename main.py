@@ -12,6 +12,10 @@ sql.execute('''CREATE TABLE IF NOT EXISTS passwords(
 id_user INTEGER PRIMARY KEY AUTOINCREMENT,
 login TEXT,
 parole TEXT);''')
+
+# CLEAR DATU BĀZE!!!!
+# sql.execute('DELETE FROM passwords')
+
 db.commit()
 sql.close()
 db.close()
@@ -74,4 +78,3 @@ def pass_generator():
     
 if __name__ == "__main__":
     app.run(host='0.0.0.0',port='8080',debug=True)
-
